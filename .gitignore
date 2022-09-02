@@ -207,3 +207,4 @@ gradle-app.setting
 
 # secret file
 ./src/main/java/com/example/demo/config/secret
+./src/main/resources/application.yml
