@@ -19,4 +19,5 @@ public class GetOrdersRes {
 
     String status;
 
+    Long customerId;
 }

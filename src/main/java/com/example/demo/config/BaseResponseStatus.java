@@ -24,25 +24,34 @@ public enum BaseResponseStatus {
 
     // users
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
+    USER_NOT_FOUND(false, 2011, "UserId가 존재하지 않습니다."),
 
-    // [POST] /users
+    // [POST] /users,
     POST_USERS_EMPTY_EMAIL(false, 2015, "이메일을 입력해주세요."),
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
     POST_USERS_EXISTS_EMAIL(false,2017,"중복된 이메일입니다."),
+    REVIEW_SEARCH_ARGS_FAIL(false, 2018, "userId, itemId중 하나만 입력해 주세요." ),
 
 
+    REVIEW_NOT_FOUND(false, 2100, "ReviewId가 존재하지 않습니다."),
+    SELLER_NOT_FOUND(false, 2201, "존재하지 않는 Seller Id 입니다."),
+    ITEM_NOT_FOUND(false, 2301, "존재하지 않는 Item Id 입니다."),
 
+    ORDER_NOT_FOUND(false, 2401, "Order Not found"),
+    ORDER_STATUS_PARAM_ERROR(false, 2111, "Order Status가 잘못되었습니다."),
     /**
      * 3000 : Response 오류
      */
     // Common
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
 
-    // [POST] /users
+    // [POST] /users,
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
-
+    ORDER_SEARCH_PARAM_ERROR(false, 2019,"customerId, itemId, sellerId중 하나만 입력해 주세요." ),
+    // [Patch] users
+    USERNAME_EXIST(false, 3015, "이미 존재하는 닉네임 입니다."),
 
     /**
      * 4000 : Database, Server 오류
@@ -50,7 +59,7 @@ public enum BaseResponseStatus {
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
     SERVER_ERROR(false, 4001, "서버와의 연결에 실패하였습니다."),
 
-    //[PATCH] /users/{userIdx}
+    //[PATCH] /users/{userIdx},
     MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),

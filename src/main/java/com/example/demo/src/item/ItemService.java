@@ -38,4 +38,7 @@ public class ItemService {
     public boolean deleteItem(Long itemId) {
         return itemDao.deleteItem(itemId);
     }
+    public Boolean isItemIdExist(Long itemId){
+        return itemDao.isItemIdExist(itemId);
+    }
 }

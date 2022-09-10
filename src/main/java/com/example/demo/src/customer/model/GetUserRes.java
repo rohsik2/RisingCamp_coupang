@@ -1,4 +1,4 @@
-package com.example.demo.src.user.model;
+package com.example.demo.src.customer.model;
 
 
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import lombok.Setter;
  * User 클래스는 스프링에서 사용하는 Objec이다.
  */
 public class GetUserRes {
-    private int userIdx;
+    private int customerId;
     private String nickname;
     private String email;
     private String password;

@@ -1,6 +1,7 @@
 package com.example.demo.src.item;
 
 import com.example.demo.src.item.model.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -57,27 +58,62 @@ public class ItemDao {
 
 
     public GetItemRes getItem(Long itemId) {
-        String getItemQuery = "select *, " +
-                "(select name from Seller where Seller.sellerId = Item.sellerId) as sellerName " +
-                "from Item where itemId = ?;"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
+        String getItemQuery = "select * from Item\n" +
+                "left outer join Seller " +
+                "on Seller.sellerId = Item.sellerId " +
+                "where Item.itemId = ?"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
+
         Object[] params = new Object[]{itemId};
-        return this.jdbcTemplate.queryForObject(getItemQuery,
+        GetItemRes res = this.jdbcTemplate.queryForObject(getItemQuery,
                 (rs, rowNum) -> new GetItemRes(
-                        rs.getLong("itemId"),
-                        rs.getString("name"),
-                        rs.getInt("price"),
-                        rs.getInt("quantity"),
-                        rs.getString("text"),
-                        rs.getString("category"),
-                        rs.getString("sellerName"),
-                        rs.getLong("sellerId")
+                        rs.getLong("Item.itemId"),
+                        rs.getString("Item.name"),
+                        rs.getInt("Item.price"),
+                        rs.getInt("Item.quantity"),
+                        rs.getString("Item.text"),
+                        rs.getString("Item.category"),
+                        rs.getString("Seller.name"),
+                        rs.getLong("Seller.sellerId")
                 ), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
-                params); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
+                params);
+        return res;
     }
 
     public boolean deleteItem(Long itemId) {
         String deleteQuery = "Delete from Item where itemId = ?";
         Object[] params = new Object[]{itemId};
         return jdbcTemplate.update(deleteQuery, params) == 1;
+    }
+
+    public List<Item> findItemsBySellerId(Long sellerId) {
+        String query = "select * from Item where sellerId = ?";
+        Object[] params = new Object[]{sellerId};
+        List<Item> employees = jdbcTemplate.query(
+                query, (rs, rowNum) -> new Item(
+                        rs.getLong("itemId"),
+                        rs.getString("name"),
+                        rs.getInt("price"),
+                        rs.getInt("quantity"),
+                        rs.getLong("sellerId"),
+                        rs.getString("text"),
+                        rs.getString("category"),
+                        rs.getDate("createdAt"),
+                        rs.getDate("updatedAt"),
+                        rs.getString("status"),
+                        rs.getBoolean("isRocket"))
+        , params);
+        return employees;
+    }
+
+    public boolean deleteSellerId(long itemId) {
+        String query = "update Item set sellerId = null where itemId = ?";
+        Object[] params = new Object[]{itemId};
+        return jdbcTemplate.update(query, params) == 1;
+    }
+
+    public Boolean isItemIdExist(Long itemId){
+        String query = "select count(*) from Item where itemId = ?";
+        Object[] params = new Object[]{itemId};
+        return jdbcTemplate.queryForObject(query, Integer.class, params) > 0;
     }
 }

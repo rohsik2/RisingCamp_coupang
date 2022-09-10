@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data @AllArgsConstructor
-public class Review {
+public class PostReviewRes {
     Long reviewId;
-    String text;
-    Float score;
-    Long itemId;
-    Long customerId;
+
 }

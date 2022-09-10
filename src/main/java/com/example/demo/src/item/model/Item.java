@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,6 +17,8 @@ public class Item {
     String category;
     Date updatedAt;
     Date createdAt;
-    char status;
+    String status;
     boolean isRocket;
+
+    private void setItemId(long itemId){};
 }

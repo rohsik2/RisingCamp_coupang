@@ -1,10 +1,11 @@
 package com.example.demo.src.order;
 
-import com.example.demo.src.order.model.GetOrdersRes;
-import com.example.demo.src.order.model.PostOrderReq;
-import com.example.demo.src.order.model.PostOrderRes;
+import com.example.demo.config.BaseResponse;
+import com.example.demo.src.order.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service @RequiredArgsConstructor
 public class OrderService {
@@ -20,5 +21,33 @@ public class OrderService {
 
     public GetOrdersRes findOrderById(Long orderId) {
         return orderDao.findOrderById(orderId);
+    }
+
+    public SearchOrderRes searchOrdersByItemId(Long itemId) {
+        List<Order> orders = orderDao.searchOrders("item", itemId);
+        return new SearchOrderRes("itemId", itemId, orders);
+    }
+
+    public SearchOrderRes searchOrdersByCustomerId(Long customerId) {
+        List<Order> orders = orderDao.searchOrders("customer", customerId);
+        return new SearchOrderRes("customer", customerId, orders);
+    }
+
+    public SearchOrderRes searchOrdersBySellerId(Long sellerId) {
+        List<Order> orders = orderDao.searchOrders("item", sellerId);
+        return new SearchOrderRes("seller", sellerId, orders);
+    }
+
+
+    public boolean isOrderExist(Long orderId) {
+        return orderDao.isOrderExist(orderId);
+    }
+
+    public Boolean patchOrderStatus(PatchOrderReq req) {
+        if("ABCDEFG".indexOf(req.getStatus()) != -1){
+            return orderDao.changeOrderStatus(req) == 1;
+        }
+        else
+            return false;
     }
 }

@@ -1,5 +1,1 @@
-18:42:39.719 ERROR [File:ItemController.java] [Func:postItem] [Line:22] [Message:나온다리요 ~ null]- 나온다리요 ~ null
-18:43:31.995 ERROR [File:ItemController.java] [Func:postItem] [Line:22] [Message:나온다리요 ~ null]- 나온다리요 ~ null
-18:44:20.108 ERROR [File:ItemController.java] [Func:postItem] [Line:22] [Message:나온다리요 ~ null]- 나온다리요 ~ null
-18:44:31.539 ERROR [File:ItemController.java] [Func:postItem] [Line:22] [Message:나온다리요 ~ wow]- 나온다리요 ~ wow
-18:44:40.484 ERROR [File:ItemController.java] [Func:postItem] [Line:22] [Message:나온다리요 ~ wow]- 나온다리요 ~ wow
+13:26:15.669 ERROR [File:UserController.java] [Func:createUser] [Line:80] [Message:[Ljava.lang.StackTraceElement;@5e62bf16]- [Ljava.lang.StackTraceElement;@5e62bf16

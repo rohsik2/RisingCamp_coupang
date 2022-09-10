@@ -1,8 +1,8 @@
-package com.example.demo.src.user;
+package com.example.demo.src.customer;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
-import com.example.demo.src.user.model.*;
+import com.example.demo.src.customer.model.*;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -25,15 +25,15 @@ public class UserProvider {
 
 
     // *********************** 동작에 있어 필요한 요소들을 불러옵니다. *************************
-    private final UserDao userDao;
+    private final CustomerDao customerDao;
     private final JwtService jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
 
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired //readme 참고
-    public UserProvider(UserDao userDao, JwtService jwtService) {
-        this.userDao = userDao;
+    public UserProvider(CustomerDao customerDao, JwtService jwtService) {
+        this.customerDao = customerDao;
         this.jwtService = jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
     }
     // ******************************************************************************
@@ -41,7 +41,7 @@ public class UserProvider {
 
     // 로그인(password 검사)
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
-        User user = userDao.getPwd(postLoginReq);
+        User user = customerDao.getPwd(postLoginReq);
         String password;
         try {
             password = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(user.getPassword()); // 암호화
@@ -51,11 +51,10 @@ public class UserProvider {
         }
 
         if (postLoginReq.getPassword().equals(password)) { //비말번호가 일치한다면 userIdx를 가져온다.
-            int userIdx = userDao.getPwd(postLoginReq).getUserIdx();
-            return new PostLoginRes(userIdx);
+            int userIdx = customerDao.getPwd(postLoginReq).getCustomerId();
 //  *********** 해당 부분은 7주차 - JWT 수업 후 주석해제 및 대체해주세요!  **************** //
-//            String jwt = jwtService.createJwt(userIdx);
-//            return new PostLoginRes(userIdx,jwt);
+            String jwt = jwtService.createJwt(userIdx);
+            return new PostLoginRes(userIdx,jwt);
 //  **************************************************************************
 
         } else { // 비밀번호가 다르다면 에러메세지를 출력한다.
@@ -66,7 +65,7 @@ public class UserProvider {
     // 해당 이메일이 이미 User Table에 존재하는지 확인
     public int checkEmail(String email) throws BaseException {
         try {
-            return userDao.checkEmail(email);
+            return customerDao.checkEmail(email);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
@@ -76,7 +75,7 @@ public class UserProvider {
     // User들의 정보를 조회
     public List<GetUserRes> getUsers() throws BaseException {
         try {
-            List<GetUserRes> getUserRes = userDao.getUsers();
+            List<GetUserRes> getUserRes = customerDao.getUsers();
             return getUserRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -86,7 +85,7 @@ public class UserProvider {
     // 해당 nickname을 갖는 User들의 정보 조회
     public List<GetUserRes> getUsersByNickname(String nickname) throws BaseException {
         try {
-            List<GetUserRes> getUsersRes = userDao.getUsersByNickname(nickname);
+            List<GetUserRes> getUsersRes = customerDao.getUsersByNickname(nickname);
             return getUsersRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -95,9 +94,9 @@ public class UserProvider {
 
 
     // 해당 userIdx를 갖는 User의 정보 조회
-    public GetUserRes getUser(int userIdx) throws BaseException {
+    public GetUserRes getUser(int customerId) throws BaseException {
         try {
-            GetUserRes getUserRes = userDao.getUser(userIdx);
+            GetUserRes getUserRes = customerDao.getUser(customerId);
             return getUserRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
